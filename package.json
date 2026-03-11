@@ -1,0 +1,162 @@
+{
+    "name": "file-last-updated",
+    "displayName": "File Last Modified",
+    "description": "Show file last modified dates in VS Code with status bar timestamps, Explorer badges, and Git-aware hover details.",
+    "version": "0.3.3",
+    "publisher": "Conecta",
+    "license": "SEE LICENSE IN LICENSE.txt",
+    "homepage": "https://linktr.ee/hola_conecta",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/albertocontreras00-sys/file-last-modified.git",
+        "directory": "file-last-modified"
+    },
+    "icon": "icon_v2.png",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "scripts": {
+        "package:vsix": "npx @vscode/vsce package",
+        "publish:marketplace": "npx @vscode/vsce publish"
+    },
+    "categories": [
+        "Visualization"
+    ],
+    "keywords": [
+        "last modified",
+        "last modified date",
+        "file modified date",
+        "file timestamp",
+        "modified time",
+        "vscode last modified",
+        "vscode extension",
+        "git last modified",
+        "explorer badge",
+        "status bar",
+        "file history",
+        "file age",
+        "code health",
+        "git commit time"
+    ],
+    "activationEvents": [
+        "onStartupFinished",
+        "onCommand:fileLastUpdated.refresh",
+        "onCommand:fileLastUpdated.enableExplorerDecorations"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "fileLastUpdated.refresh",
+                "title": "Refresh Last Modified",
+                "category": "File Last Modified"
+            },
+            {
+                "command": "fileLastUpdated.enableExplorerDecorations",
+                "title": "Enable Explorer Decorations",
+                "category": "File Last Modified"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "fileLastUpdated.enableExplorerDecorations",
+                    "when": "view == workbench.explorer.fileView",
+                    "group": "navigation@101"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "fileLastUpdated.enableExplorerDecorations",
+                    "when": "resourceScheme == file",
+                    "group": "navigation@101"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "fileLastUpdated.refresh",
+                    "when": "true"
+                },
+                {
+                    "command": "fileLastUpdated.enableExplorerDecorations",
+                    "when": "true"
+                }
+            ]
+        },
+        "colors": [
+            {
+                "id": "fileLastUpdated.ageGreen",
+                "description": "Color used for recently modified file decorations.",
+                "defaults": {
+                    "dark": "#3fb950",
+                    "light": "#1a7f37",
+                    "highContrast": "#3fb950",
+                    "highContrastLight": "#1a7f37"
+                }
+            },
+            {
+                "id": "fileLastUpdated.ageYellow",
+                "description": "Color used for aging file decorations.",
+                "defaults": {
+                    "dark": "#d29922",
+                    "light": "#9a6700",
+                    "highContrast": "#d29922",
+                    "highContrastLight": "#9a6700"
+                }
+            },
+            {
+                "id": "fileLastUpdated.ageRed",
+                "description": "Color used for stale file decorations.",
+                "defaults": {
+                    "dark": "#f85149",
+                    "light": "#cf222e",
+                    "highContrast": "#f85149",
+                    "highContrastLight": "#cf222e"
+                }
+            }
+        ],
+        "configuration": {
+            "title": "File Last Modified",
+            "properties": {
+                "fileLastUpdated.greenDays": {
+                    "type": "number",
+                    "default": 14,
+                    "minimum": 0,
+                    "description": "Days considered active."
+                },
+                "fileLastUpdated.yellowDays": {
+                    "type": "number",
+                    "default": 35,
+                    "minimum": 0,
+                    "description": "Days considered aging before the stale color is used."
+                },
+                "fileLastUpdated.timeZone": {
+                    "type": "string",
+                    "default": "America/Los_Angeles",
+                    "description": "IANA timezone used when rendering the last modified timestamp in the status bar and tooltips. Example: America/Los_Angeles."
+                },
+                "fileLastUpdated.enableGitHub": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Fetch the latest commit time from GitHub when the repository origin points to GitHub."
+                },
+                "fileLastUpdated.githubToken": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional GitHub personal access token used to reduce anonymous API rate limit issues."
+                },
+                "fileLastUpdated.githubTimeoutMs": {
+                    "type": "integer",
+                    "default": 4000,
+                    "minimum": 500,
+                    "description": "Timeout in milliseconds for GitHub API requests."
+                },
+                "fileLastUpdated.colorizeExplorerLabels": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "When enabled, Explorer filename labels are tinted using file age colors. Enabled by default."
+                }
+            }
+        }
+    },
+    "main": "./extension.js"
+}
